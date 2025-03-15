@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "725605393327",
+    "project_id": "scientific-research-eb4e5",
+    "storage_bucket": "scientific-research-eb4e5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725605393327:android:0ef00bae93f3183e80c55a",
+        "android_client_info": {
+          "package_name": "com.example.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0MZPcktY3jmdSgjLySupe8m_csT6AzwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
