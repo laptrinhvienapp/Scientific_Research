@@ -11,8 +11,7 @@ class TopBar extends StatelessWidget {
     final String firstLetter = userName.isNotEmpty ? userName[0].toUpperCase() : '?';
 
     return Card(
-      elevation: 1,
-      color: Colors.grey.shade50,
+      elevation: 2,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
       ),

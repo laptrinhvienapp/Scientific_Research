@@ -8,4 +8,5 @@ class RoutesLocation {
   static String get loginScreen => '/loginScreen';
   static String get createAccountScreen => '/createAccountScreen';
   static String get contactsScreen => '/contactsScreen';
+  static String get layoutUi => '/layoutUi';
 }

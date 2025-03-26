@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:project/screens/layout_gui.dart';
 import 'package:project/services/firebase_services.dart';
-import 'package:project/utils/app_secrets.dart';
+import 'package:project/utils/utils.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 
-class CallInvitation extends StatelessWidget {
+class CallInvitation extends StatefulWidget {
   const CallInvitation({
     super.key,
     required this.child,
@@ -13,11 +14,17 @@ class CallInvitation extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    /// Lấy thông tin người dùng hiện tại
-    final currentUser = FirebaseServices.currentUser;
+  State<CallInvitation> createState() => _CallInvitationState();
+}
 
-    /// 4/5. Khởi tạo ZegoUIKitPrebuiltCallInvitationService khi tài khoản được đăng nhập hoặc đăng nhập lại
+class _CallInvitationState extends State<CallInvitation> {
+  final currentUser = FirebaseServices.currentUser;
+  String? _currentCallID;
+
+  @override
+  void initState() {
+    super.initState();
+
     ZegoUIKitPrebuiltCallInvitationService().init(
       appID: AppSecrets.appID,
       appSign: AppSecrets.appSign,
@@ -26,7 +33,45 @@ class CallInvitation extends StatelessWidget {
       plugins: [
         ZegoUIKitSignalingPlugin(),
       ],
+      requireConfig: (ZegoCallInvitationData data) {
+        _currentCallID = data.callID;
+        return ZegoUIKitPrebuiltCallConfig();
+      },
+      events: ZegoUIKitPrebuiltCallEvents(
+        user: ZegoCallUserEvents(
+          onEnter: (ZegoUIKitUser user) {
+            if (_currentCallID != null) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => LayoutGui(
+                    callID: _currentCallID!,
+                    appID: AppSecrets.appID,
+                    appSign: AppSecrets.appSign,
+                    userID: currentUser.userID,
+                    userName: currentUser.userName,
+                    config: ZegoUIKitPrebuiltCallConfig(
+                      layout: ZegoLayoutPictureInPictureConfig(
+                        smallViewSize: Size.zero,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      ),
     );
-    return child;
+  }
+
+  @override
+  void dispose() {
+    ZegoUIKitPrebuiltCallInvitationService().uninit();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
